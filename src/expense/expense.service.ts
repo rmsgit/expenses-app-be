@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Expense } from '../entities/expense';
 
 @Injectable()
 export class ExpenseService {
+  constructor(
+    @InjectModel(Expense.name) private expenseModel: Model<Expense>,
+  ) {}
   create(createExpenseDto: CreateExpenseDto) {
-    return 'This action adds a new expense';
+    return this.expenseModel.create(createExpenseDto);
   }
 
   findAll() {
-    return `This action returns all expense`;
+    return this.expenseModel.find();
   }
 
   findOne(id: number) {
